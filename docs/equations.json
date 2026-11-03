@@ -1,0 +1,641 @@
+{
+  "id": "gmt",
+  "name": "GMT",
+  "version": "1.10.0",
+  "groups": [
+    {
+      "title": "Tenseur orthotrope / Orthotropic tensor",
+      "math": "\\sigma&=C\\varepsilon,\\quad C=S^{-1},\\quad S\\succ0,\\\\\nS_{ii}&=1/E_i\\ (i=1,2,3),\\quad (S_{44},S_{55},S_{66})=(1/G_{LR},1/G_{LT},1/G_{RT}),\\\\\nS_{12}&=-\\nu_{LR}/E_L,\\quad S_{13}=-\\nu_{LT}/E_L,\\quad S_{23}=-\\nu_{RT}/E_R,\\\\\nS_{ij}&=S_{ji}.",
+      "fr": "Ordre de Voigt LL, RR, TT, LR, LT, RT, avec cisaillements d’ingénieur. Les modules GPa deviennent des Pa par 1e9. La symétrie de souplesse impose la réciprocité des coefficients de Poisson. Une énergie non positive est rejetée.",
+      "en": "Voigt order is LL, RR, TT, LR, LT, RT with engineering shear. GPa converts to Pa by 1e9. Symmetric compliance enforces Poisson reciprocity. Nonpositive energy is rejected.",
+      "refs": [
+        [
+          "backend/catalog.py",
+          "def compliance("
+        ]
+      ]
+    },
+    {
+      "title": "TET10 et quadrature / TET10 and quadrature",
+      "math": "N_i&=\\lambda_i(2\\lambda_i-1),\\quad N_{ij}=4\\lambda_i\\lambda_j\\ (i<j),\\quad\\sum_{i=1}^4\\lambda_i=1,\\\\\nx&=\\sum_{a=1}^{10}N_ax_a,\\quad J=\\partial x/\\partial\\xi,\\quad\\nabla_xN=J^{-T}\\nabla_\\xi N,\\\\\nK_e&=\\int B^TCB\\,dV,\\qquad M_e=\\rho\\int N^TN\\otimes I_3\\,dV.",
+      "fr": "Quatre sommets et six milieux d’arêtes. B calcule les déformations d’ingénieur ; la masse est cohérente. Quadrature à 11 points : centroïde (poids -0,0131555555555556), 4 permutations de (11/14,1/14,1/14,1/14), poids 0,00762222222222222 ; 6 permutations de (a,a,b,b), a=0,399403576166799, b=0,100596423833201, poids 0,0248888888888889. Somme des poids : 1/6.",
+      "en": "Four vertices and six edge midpoints. B computes engineering strain; mass is consistent. Eleven-point quadrature: centroid weight -74/5625; four permutations of (11/14,1/14,1/14,1/14) with weight 343/45000; six permutations of (a,a,b,b), where a=(1+sqrt(5/14))/4 and b=(1-sqrt(5/14))/4, with weight 28/1125. These are exact algorithm constants, not measured precision. Weights sum to 1/6.",
+      "refs": [
+        [
+          "backend/fem.py",
+          "def shape("
+        ]
+      ]
+    },
+    {
+      "title": "Modes élastiques / Elastic modes",
+      "math": "K\\phi_j&=\\lambda_j M\\phi_j,\\quad\\phi_i^TM\\phi_j=\\delta_{ij},\\\\\nf_j&=\\sqrt{\\lambda_j}/(2\\pi),\\qquad r_j=\\frac{\\|K\\phi_j-\\lambda_jM\\phi_j\\|}{\\max(\\|K\\phi_j\\|,\\epsilon)}.",
+      "fr": "Solveur propre creux avec décalage spectral, retrait des degrés bloqués et des six mouvements rigides en libre-libre. La normalisation est massique. Un faible résidu ne garantit pas la convergence de maillage ; les modes hors bande ne justifient pas une extrapolation précise.",
+      "en": "Sparse shifted eigensolver, removal of constrained degrees and six free-free rigid modes. Normalization is mass-based. Low residual does not establish mesh convergence; out-of-band modes do not justify accurate extrapolation.",
+      "refs": [
+        [
+          "backend/fem.py",
+          "def wood_system("
+        ]
+      ]
+    },
+    {
+      "title": "Contours de référence et pan coupé / Reference outlines and cutaway",
+      "math": "(x_j,y_j)&=(W u_j,L v_j),\\\\B(t)&=(1-t)^3P_0+3(1-t)^2tP_1+3(1-t)t^2P_2+t^3P_3,\\\\b(t)&=t^2(3-2t),\\quad a\\prime(t)=a(t)+(1-b)(N-a_0)+b(R-a_1).",
+      "fr": "Les points normalisés (u,v) proviennent des données GMT 1.6 documentées dans CONTOURS.md. Les dimensions W,L converties en mètres donnent le contour. Il ne s’agit plus de demi-largeurs PCHIP originales. Le pan coupé s’adapte au talon N et à l’épaule R, puis sa profondeur varie avec un poids cosinus nul à la corne. Un raccord Bézier tangentiel rejoint le contour. Formes invalides ou aire inférieure à 65 % refusées. Conditions de redistribution distinctes : PUBLICATION.md.",
+      "en": "Normalized (u,v) points are GMT 1.6 reference data documented in CONTOURS.md. Width W and length L in metres scale the outline. These are no longer original PCHIP half-widths. Cutaway adapts to neck N and shoulder R; depth follows a cosine weight ending at the horn, with a tangent Bézier join. Invalid shapes or area below 65% are rejected. Separate content conditions: PUBLICATION.md.",
+      "refs": [
+        [
+          "backend/contours.py",
+          "def outline("
+        ],
+        [
+          "backend/contours.py",
+          "def bezier("
+        ],
+        [
+          "backend/contours.py",
+          "def cutaway("
+        ]
+      ]
+    },
+    {
+      "title": "Mise à l’échelle et voûte / Scaling and arch",
+      "math": "x'&=W[x-(x_{min}+x_{max})/2]/(x_{max}-x_{min}),\\\\\ny'&=L(y-y_{min})/(y_{max}-y_{min}),\\\\\na(x,y)&=H\\max[0,1-(2x/W)^2]\\max[0,\\sin(\\pi y/L)]^{1.2},\\\\\nz'&=z+t a_{top}-(1-t)a_{back},\\quad t=\\clip[(z+d)/d,0,1].",
+      "fr": "L, W, H et d sont en m après conversion des entrées mm. Le contour importé est centré et redimensionné. La simplification est bornée par la distance de Hausdorff. La voûte déforme le maillage ; ce modèle paramétrique ne copie pas une table historique.",
+      "en": "L, W, H and d are meters after mm input conversion. Imported outline is centered and scaled. Simplification is bounded by Hausdorff distance. Arch warps the mesh; this parametric model does not copy a historical plate.",
+      "refs": [
+        [
+          "backend/contours.py",
+          "def outline("
+        ],
+        [
+          "backend/geometry.py",
+          "def arch("
+        ],
+        [
+          "backend/geometry.py",
+          "def warp("
+        ]
+      ]
+    },
+    {
+      "title": "Rosace et ouïes / Soundhole and apertures",
+      "math": "x(\\theta)&=c_x+r_x\\cos\\theta,\\quad y(\\theta)=c_y+r_y\\sin\\theta,\\\\\np_{SVG}&=(width\\,u+c_x,height\\,v+c_y),\\\\\nx_f(t)&=c_x\\pm[0.21W+0.7r_x\\sin(2\\pi t)],\\quad y_f(t)=c_y+r_y(2t-1).",
+      "fr": "La largeur et la hauteur règlent la taille du trou de rosace. Le cercle/ellipse utilise 40 segments ; l’ouverture D est recoupée par un demi-plan. Les ouïes f sont des lignes épaissies de 0,32rx. Les contours SVG sont redimensionnés comme des ouvertures distinctes, contrôlées vis-à-vis des éclisses, du chevalet et entre elles.",
+      "en": "Width and height control soundhole size. Circle/ellipse uses 40 segments; D opening is clipped by a half-plane. f-holes are lines buffered by 0.32rx. SVG rings scale as separate apertures, checked against ribs, bridge and each other.",
+      "refs": [
+        [
+          "backend/geometry.py",
+          "def holes("
+        ],
+        [
+          "backend/geometry.py",
+          "def checked_holes("
+        ],
+        [
+          "backend/geometry.py",
+          "def brace_footprint("
+        ]
+      ]
+    },
+    {
+      "title": "Transformations et courbes SVG / SVG transforms and curves",
+      "math": "\\widetilde p'&=T_1T_2\\cdots T_n\\widetilde p,\\quad\\widetilde p=(x,y,1)^T,\\\\\nR(\\phi)&=\\begin{pmatrix}\\cos\\phi&-\\sin\\phi\\\\\\sin\\phi&\\cos\\phi\\end{pmatrix},\\quad p'=R(p-c)+c,\\\\\np_{ij}^{new}&=(p_i+p_{i+1})/2,\\\\\np(\\theta)&=c+R(\\phi)(r_x\\cos\\theta,r_y\\sin\\theta)^T,\\\\\n\\Delta\\theta&=2\\arccos[\\clip(1-tol/\\max(r_x,r_y),-1,1)].",
+      "fr": "Matrices affines, rotations, translations, échelles et cisaillements sont composés dans l’ordre SVG. Les Bézier se subdivisent par de Casteljau jusqu’à la tolérance de corde et d’excès de polygone de contrôle, profondeur au plus 16. Les arcs elliptiques utilisent la conversion extrémités-centre SVG et un pas borné par la flèche ; au plus 4096 points. Le code lit uniquement la géométrie inerte, sans exécuter scripts ou liens externes.",
+      "en": "Affine matrices, rotations, translation, scale and skew compose in SVG order. Bézier uses de Casteljau subdivision until chord-distance and control-polygon excess meet tolerance, depth at most 16. Elliptic arcs use SVG endpoint-to-center conversion and sagitta-bounded step, at most 4096 points. Only inert geometry is read, with no script or external-link execution.",
+      "refs": [
+        [
+          "backend/svg_holes.py",
+          "def transform("
+        ],
+        [
+          "backend/svg_holes.py",
+          "def flatten_curve("
+        ],
+        [
+          "backend/svg_holes.py",
+          "def arc("
+        ],
+        [
+          "backend/svg_holes.py",
+          "def parse_svg("
+        ]
+      ]
+    },
+    {
+      "title": "Repères locaux et pertes / Local frames and losses",
+      "math": "\\varepsilon_{LRT}&=R^T\\varepsilon R,\\quad e_{LRT}=Qe,\\quad C_{global}=Q^TCQ,\\\\\nK_{loss}&=\\sum_p\\eta_p K_p,\\quad\\eta_j=\\phi_j^TK_{loss}\\phi_j/\\omega_j^2,\\quad\\zeta_j=\\eta_j/2.",
+      "fr": "Le repère matériau suit chaque pièce, les orientations de fil/cernes et la voûte, avec orthonormalisation. La matrice de pertes additionne les rigidités pondérées des pièces ; les pertes modales sont leur projection massiquement normalisée.",
+      "en": "Material frame follows each component, grain/ring angles and arch, with orthonormalization. Loss matrix sums component stiffnesses weighted by loss; modal damping projects onto mass-normalized modes.",
+      "refs": [
+        [
+          "backend/fem.py",
+          "def frames("
+        ],
+        [
+          "backend/fem.py",
+          "def stiffness_material("
+        ],
+        [
+          "backend/fem.py",
+          "def wood_system("
+        ]
+      ]
+    },
+    {
+      "title": "Ports mécaniques et surfaces / Mechanical ports and surfaces",
+      "math": "N_i^\\triangle&=\\lambda_i(2\\lambda_i-1),\\quad N_{ij}^\\triangle=4\\lambda_i\\lambda_j,\\\\\nu_{port}&=B^Tu,\\quad F_{nodes}=BF_{port},\\quad P=\\Phi^TB,\\\\\nS_{face,j}&=A_{face}\\,n\\cdot\\frac{u_{mid1,j}+u_{mid2,j}+u_{mid3,j}}3 .",
+      "fr": "Douze ports représentent six cordes en directions normale et tangentielle. Interpolation et distribution de force utilisent les mêmes fonctions quadratiques. L’intégrale surfacique exacte d’un triangle quadratique donne zéro aux sommets et un tiers aux milieux ; elle produit le déplacement volumique des panneaux rayonnants.",
+      "en": "Twelve ports represent six strings in normal and tangential directions. Interpolation and force spreading use the same quadratic functions. Exact quadratic triangle area averaging gives zero vertex weights and one third at edge midpoints, yielding radiating panel volume displacement.",
+      "refs": [
+        [
+          "backend/fem.py",
+          "def port_matrix("
+        ],
+        [
+          "backend/fem.py",
+          "def boundary("
+        ],
+        [
+          "backend/response.py",
+          "def prepare("
+        ]
+      ]
+    },
+    {
+      "title": "Acoustique interne TET4 / Internal TET4 acoustics",
+      "math": "K^a_e&=V_e\\nabla N_i\\cdot\\nabla N_j,\\quad M^a_e=V_e(\\mathbf1+I)/20,\\\\\nK^a\\psi_j&=k_j^2M^a\\psi_j,\\quad\\omega^a_j=c k_j,\\quad\\psi_i^TM^a\\psi_j=\\delta_{ij},\\\\\nC_{ja}&=\\int_{\\Gamma}\\psi_a(n\\cdot\\phi_j)\\,dS,\\quad h_a=\\langle\\psi_a\\rangle_{hole}.",
+      "fr": "La pression utilise des fonctions linéaires et la structure des fonctions quadratiques. Le couplage de surface est intégré sur les triangles avec six points de quadrature. Les modes acoustiques, dont le mode uniforme, interagissent avec la structure et les coordonnées d’ouverture.",
+      "en": "Pressure uses linear functions and structure quadratic ones. Surface coupling uses six-point triangle quadrature. Acoustic modes, including uniform mode, interact with structure and aperture coordinates.",
+      "refs": [
+        [
+          "backend/fem.py",
+          "def air_system("
+        ],
+        [
+          "backend/fem.py",
+          "def coupling_to_air("
+        ]
+      ]
+    },
+    {
+      "title": "Correction statique et modes résiduels / Static residual modes",
+      "math": "K X&=B,\\quad R=X-\\Phi\\Omega^{-2}\\Phi^TB,\\\\\nR&\\leftarrow R-\\Phi\\Phi^TMR,\\quad R^TKR=U\\Lambda U^T,\\quad Q=RU\\Lambda^{-1/2},\\\\\nQ^TKQz&=\\lambda Q^TMQz,\\\\\n\\epsilon_{stat}&=\\frac{\\|P^T\\Omega^{-2}P+P_r^T\\Lambda_r^{-1}P_r-B^TX\\|}{\\|B^TX\\|}.",
+      "fr": "En libre-libre, la résolution statique utilise un système selle avec les six mouvements rigides massiquement orthogonaux. L’orthogonalisation est répétée deux fois ; les petites valeurs d’énergie sont supprimées. La base résiduelle complète les ports mais ne rend pas exact le modèle à fréquence arbitrairement haute.",
+      "en": "Free-free static solve uses a saddle system with six mass-orthogonal rigid motions. Orthogonalization repeats twice and small energy eigenvalues are removed. Residual basis completes port response but does not make the model exact at arbitrarily high frequency.",
+      "refs": [
+        [
+          "backend/reduction.py",
+          "def residual_modes("
+        ]
+      ]
+    },
+    {
+      "title": "Ouverture acoustique et Helmholtz / Aperture and Helmholtz",
+      "math": "r_{eq}&=\\sqrt{S/\\pi},\\quad\\ell_{end}=a_{end}r_{eq},\\quad M_h=\\rho_a\\ell_{end}/S,\\\\\nR_h&=r_{factor}\\left[\\frac{\\rho_a\\omega^2}{4\\pi c}+0.05M_h\\max\\left(1,c\\sqrt{S/(V\\ell_{end})}\\right)\\right],\\\\\nd_h&=-\\omega^2M_h+i\\omega R_h,\\\\\nf_H^{display}&=\\frac{c}{2\\pi}\\sqrt{\\frac S{V(t_{top}+a_{end}r_{eq})}}.",
+      "fr": "Le solveur utilise une masse d’ouverture basée sur la correction d’extrémité, avec une résistance approchée. Le repère de Helmholtz affiché ajoute l’épaisseur de table et suppose une cavité rigide ; il ne remplace pas la solution couplée. Ne pas confondre ces deux longueurs effectives.",
+      "en": "The solver uses aperture mass based on end correction and approximate resistance. The displayed Helmholtz guide adds top thickness and assumes a rigid cavity; it does not replace the coupled solution. These two effective lengths must not be conflated.",
+      "refs": [
+        [
+          "backend/response.py",
+          "def coefficients("
+        ],
+        [
+          "backend/response.py",
+          "def public_response("
+        ]
+      ]
+    },
+    {
+      "title": "Résolution vibroacoustique / Vibroacoustic solve",
+      "math": "d_j&=\\omega_j^2-\\omega^2+2i\\omega\\zeta_j\\omega_j,\\\\\nd_a&=k_a^2-(\\omega/c)^2+2i\\zeta_a\\omega\\omega_a/c^2,\\quad\\zeta_a=0.025,\\\\\nD&=\\diag(d_j,d_h),\\quad A=\\begin{bmatrix}C\\\\h\\end{bmatrix},\\quad q_0=D^{-1}F,\\\\\nW&=\\diag(d_a/(\\rho_a\\omega^2))-A^TD^{-1}A,\\\\\na&=W^{-1}A^Tq_0,\\quad q=q_0+D^{-1}Aa,\\quad Y=i\\omega P^Tq.",
+      "fr": "Ce complément de Schur élimine les variables mécaniques dans l’espace réduit puis restitue les coordonnées de structure et d’ouverture. Les modifications de pic multiplient les projections émettrice et réceptrice par 10^(gain/40). DC est traité séparément.",
+      "en": "This Schur complement eliminates mechanical variables in reduced space, then recovers structure and aperture coordinates. Peak edits multiply both emitting and receiving projections by 10^(gain/40). DC is treated separately.",
+      "refs": [
+        [
+          "backend/response.py",
+          "def modal_parameters("
+        ],
+        [
+          "backend/response.py",
+          "def response_grid("
+        ]
+      ]
+    },
+    {
+      "title": "Rayonnement extérieur / Exterior radiation",
+      "math": "G(d,\\omega)&=e^{-i\\omega d/c}/d,\\\\\nH_{pF}&=-\\frac{\\rho_a\\omega^2}{4\\pi}\\left[\\sum_sG(d_s,\\omega)S_s q_s+G(d_h,\\omega)q_h\\right].",
+      "fr": "Somme de panneaux monopoles avec propagation vers le point d’écoute. La distance est bornée à 3 cm. Le rayonnement extérieur est approché et n’est pas un calcul BEM complet avec retour de charge acoustique. La pression simulée n’est pas une calibration de microphone.",
+      "en": "Monopole-panel sum propagates toward the listening point. Distance is bounded at 3 cm. Exterior radiation is approximate, not full BEM with radiation-loading feedback. Simulated pressure is not microphone calibration.",
+      "refs": [
+        [
+          "backend/response.py",
+          "def coefficients("
+        ],
+        [
+          "backend/response.py",
+          "def response_grid("
+        ]
+      ]
+    },
+    {
+      "title": "Corde : accordage et pertes / String tuning and loss",
+      "math": "L&=L_0 2^{-r/12},\\quad f_o=f_{A4}2^{(m-69)/12},\\\\\nT&=4\\mu L_0^2f_o^2-\\pi^2EI/L_0^2,\\\\\nf_0&=\\frac1{2\\pi}\\sqrt{[T(\\pi/L)^2+EI(\\pi/L)^4]/\\mu},\\\\\n\\alpha(f)&=loss+hf\\,f+2\\,10^{-8}f^2+palm(12+0.015f).",
+      "fr": "Mu est saisi en g/m puis converti en kg/m. La tension négative est refusée. Les pertes de contact de paume sont phénoménologiques ; elles ne résolvent pas un contact non linéaire main-corde.",
+      "en": "Mu is entered in g/m and converted to kg/m. Negative tension is rejected. Palm losses are phenomenological, not a nonlinear hand-string contact solution.",
+      "refs": [
+        [
+          "backend/strings.py",
+          "def string_properties("
+        ],
+        [
+          "backend/strings.py",
+          "def decay_rate("
+        ]
+      ]
+    },
+    {
+      "title": "Impédance de corde raide / Stiff-string impedance",
+      "math": "\\omega_c&=\\omega-i\\alpha,\\quad\\Delta=\\sqrt{T^2+4EI\\mu\\omega_c^2},\\\\\nk^2&=\\frac{2\\mu\\omega_c^2}{T+\\Delta},\\quad\\kappa^2=\\frac{T+\\Delta}{2EI},\\quad A=\\frac{\\kappa^2}{\\kappa^2+k^2},\\quad B=1-A,\\\\\nD_s&=(T+EI k^2)k\\cot(kL)A-EI k^2\\kappa\\coth(\\kappa L)B,\\\\\nZ_s&=D_s/(i\\omega).",
+      "fr": "La forme de k² évite une soustraction mal conditionnée. Pour EI négligeable, D=T k cot(kL), k=oméga_c racine(mu/T). À DC le code impose Z=0. Cette impédance passive représente la charge mécanique de la corde au chevalet.",
+      "en": "The k² form avoids ill-conditioned subtraction. Negligible EI gives D=T k cot(kL), k=omega_c sqrt(mu/T). Code sets Z=0 at DC. This passive impedance represents bridge string loading.",
+      "refs": [
+        [
+          "backend/strings.py",
+          "def string_impedance("
+        ]
+      ]
+    },
+    {
+      "title": "Charge couplée et passivité / Coupled loading and passivity",
+      "math": "Q&=[I+\\diag(Z_s)Y]^{-1},\\quad Y_{loaded}=YQ,\\quad H_{loaded}=HQ,\\\\\nF&=QF_{blocked},\\quad v=YF,\\quad p=HF,\\\\\nY_H&=(Y+Y^*)/2,\\quad\\lambda_{min}(Y_H)\\geq0\\ \\text{for passivity}.",
+      "fr": "Les impédances de cordes chargent les douze ports ; les cordes non excitées peuvent rester actives pour la sympathie. La passivité est échantillonnée sur la grille, ce qui n’est pas une preuve continue sur toutes les fréquences.",
+      "en": "String impedances load twelve ports; unexcited strings can remain active for sympathy. Passivity is sampled on the frequency grid, not proven continuously at all frequencies.",
+      "refs": [
+        [
+          "backend/response.py",
+          "def public_response("
+        ],
+        [
+          "backend/audio.py",
+          "def templates("
+        ]
+      ]
+    },
+    {
+      "title": "Force bloquée, FFT et synthèse / Blocked force and synthesis",
+      "math": "q_n&=\\frac{2F\\sin(k_nx_p)}{L(Tk_n^2+EI k_n^4)}s_n^{exc},\\\\\nF_b(t)&=\\sum_n(Tk_n+EI k_n^3)q_n\\cos(\\omega_nt)e^{-\\alpha_nt},\\\\\ns_n^{exc}&=\\sinc(k_nw/2)e^{-(1-hardness)f_n/f_h},\\\\\n(F_z,F_x)&=F_b(\\cos\\theta,\\sin\\theta),\\quad N=\\mathrm{nextfast}(N_{audio}+2f_s).",
+      "fr": "La force bloquée est celle d’une corde pincée à extrémité fixe, puis la résolution chargée donne force réelle, vitesse et pression. Le calcul FFT ajoute deux secondes de garde ; les transferts sont interpolés en parties réelle et imaginaire. Au-delà de la grille la décroissance est fmax/f. Les bords de bande sont adoucis ; cette méthode fréquentielle à durée finie reste une approximation transitoire.",
+      "en": "Blocked force comes from a fixed-end plucked string; loaded solve gives actual force, velocity and pressure. FFT adds two seconds of guard; transfer real and imaginary parts are interpolated. Beyond the grid decay is fmax/f. Band edges are tapered; finite-duration frequency-domain synthesis remains a transient approximation.",
+      "refs": [
+        [
+          "backend/audio.py",
+          "def interpolate("
+        ],
+        [
+          "backend/audio.py",
+          "def templates("
+        ],
+        [
+          "backend/audio.py",
+          "def synthesize("
+        ]
+      ]
+    },
+    {
+      "title": "Phrases et tempo / Phrases and tempo",
+      "math": "t_e&=60b_e/\\mathrm{BPM},\\quad L_{fret}=L_0 2^{-fret/12},\\\\\ny_j&=\\sum_e strength_e\\,x_{string_e,fret_e}[j-\\operatorname{round}(t_ef_s)]\\,w_e[j].",
+      "fr": "Les notes sont regroupées par corde/case afin de limiter la mémoire. Chaque attaque est une réponse linéaire indépendante utilisant les réglages de guitare. La fin de note reçoit un fondu de 15 ms. Les changements de doigté ne modélisent pas une interaction sympathique variant continûment dans le temps.",
+      "en": "Notes are grouped by string/fret to bound memory. Each attack is an independent linear response using current guitar settings. Note release receives a 15 ms fade. Finger changes do not model continuously time-varying sympathetic interaction.",
+      "refs": [
+        [
+          "backend/repertoire.py",
+          "def synthesize_phrase("
+        ],
+        [
+          "web/repertoire.js",
+          "60/"
+        ]
+      ]
+    },
+    {
+      "title": "Dispersion Monte-Carlo / Monte Carlo dispersion",
+      "math": "\\sigma&=\\sqrt{\\ln(1+CV^2)},\\quad z=\\sqrt{r}z_c+\\sqrt{1-r}z_i,\\\\\na&=\\exp(\\sigma z-\\sigma^2/2),\\quad g_{dB}=40\\log_{10}a,\\\\\n(q_{10},q_{50},q_{90})&=\\operatorname{quantile}_{0.1,0.5,0.9}|H^{(s)}(f)|.",
+      "fr": "Les facteurs lognormaux ont une moyenne unitaire. La corrélation r partage un tirage commun au sein d’une famille de paramètres. Fréquences, pertes et gains sont perturbés avec bornes. Les quantiles point par point représentent la dispersion choisie, pas des intervalles de confiance expérimentaux ; les déformées, l’air et la base résiduelle restent fixés.",
+      "en": "Lognormal factors have unit mean. Correlation r shares a common draw within each parameter family. Frequencies, losses and gains are perturbed with bounds. Pointwise quantiles represent chosen dispersion, not experimental confidence intervals; mode shapes, air and residual basis remain fixed.",
+      "refs": [
+        [
+          "backend/uncertainty.py",
+          "def ensemble("
+        ]
+      ]
+    },
+    {
+      "title": "FFT et fenêtres spectrales / FFT and spectral windows",
+      "math": "X_k&=\\sum_{j=0}^{N-1}w_jx_je^{-2\\pi i jk/N},\\quad A_k=c_k|X_k|/\\sum_jw_j,\\\\\nL_k&=20\\log_{10}\\max(10^{-14},A_k),\\quad a=2\\pi j/(N-1),\\\\\nw_H&=0.5-0.5\\cos a,\\quad w_{Ham}=0.54-0.46\\cos a,\\\\\nw_{Blackman}&=0.42-0.5\\cos a+0.08\\cos2a,\\quad \\Delta f=f_s/N.",
+      "fr": "La FFT radix-2 impose une taille puissance de deux. Le spectre conserve N/2 bins ; le facteur ck vaut 1 à DC et 2 ailleurs. La fenêtre rectangulaire vaut un. Le zéro-remplissage ne crée pas de résolution physique supplémentaire.",
+      "en": "Radix-2 FFT requires power-of-two size. Spectrum retains N/2 bins; ck is 1 at DC and 2 elsewhere. Rectangular window is one. Zero padding does not create additional physical resolution.",
+      "refs": [
+        [
+          "web/signal.js",
+          "export function fft("
+        ]
+      ]
+    },
+    {
+      "title": "Crête, RMS et WAV / Peak, RMS and WAV",
+      "math": "P&=\\max_j|x_j|,\\quad x_{RMS}=\\sqrt{N^{-1}\\sum_jx_j^2},\\\\\nq_{16}&=\\operatorname{round}(s\\,\\clip(x,-1,1)),\\quad s\\in\\{32767,32768\\},\\\\\nbytes_{data}&=N\\,channels\\,(bits/8),\\quad byteRate=f_s\\,channels\\,(bits/8).",
+      "fr": "PCM borne les échantillons à [-1,1]. Les variantes qui utilisent 32768 pour les valeurs négatives exploitent la plage signée complète ; GMT/ToneWood utilisent 32767 des deux côtés. Les conversions DataView sans arrondi explicite tronquent. Les WAV flottants, lorsqu’ils sont proposés, conservent les grandeurs physiques et leurs unités doivent être lues avec les métadonnées.",
+      "en": "PCM clips samples to [-1,1]. Variants using 32768 for negative values use the full signed range; GMT/ToneWood use 32767 on both sides. DataView conversion without explicit rounding truncates. Floating WAV, where offered, retains physical quantities whose units must be read with metadata.",
+      "refs": [
+        [
+          "web/signal.js",
+          "export function wav("
+        ]
+      ]
+    },
+    {
+      "title": "Écoute et sélection spectrale / Monitoring and band selection",
+      "math": "g_{req}&=v10^{g_{dB}/20}\\begin{cases}0.8/P&\\text{peak}\\\\0.12/RMS&\\text{RMS}\\\\1&\\text{physical}\\end{cases},\\\\\ng&=\\min(g_{req},0.9/P),\\\\\nw(f)&=\\tfrac12[1+\\cos(\\pi d(f)/\\Delta)]\\quad(0<d<\\Delta).",
+      "fr": "Le gain d’écoute est plafonné par la crête. Une sélection temps-fréquence utilise une FFT avec 30 ms de garde, des transitions de 10 à 100 Hz et un fondu temporel de 5 ms. Les fenêtres graphiques min/max conservent les extrema des échantillons par bloc, sans filtrer les données physiques.",
+      "en": "Listening gain is peak-capped. Time-frequency selection uses FFT with 30 ms padding, 10-100 Hz transition width and 5 ms time fades. Graphical min/max envelopes retain block extrema without filtering physical data.",
+      "refs": [
+        [
+          "web/signal.js",
+          "export function playbackGain("
+        ],
+        [
+          "web/signal.js",
+          "export function extractBand("
+        ],
+        [
+          "web/signal.js",
+          "export function waveformEnvelope("
+        ]
+      ]
+    },
+    {
+      "title": "Précision affichée / Display precision",
+      "math": "d&=\\lfloor\\log_{10}u\\rfloor-1,\\quad h=10^d,\\\\x_{display}&=h\\operatorname{round}(x/h),\\quad u=\\max(x-l,r-x).",
+      "fr": "Affichage uniquement : trois chiffres significatifs en général, quatre au maximum pour les cotes et fréquences. Dans un intervalle FEMU [l,r], la plus grande demi-largeur u fixe le rang décimal de l’estimation et des deux bornes (deux chiffres significatifs de largeur). Aucun arrondi n’est appliqué aux calculs ni aux exports. Sans intervalle valide, format significatif standard. Les constantes algorithmiques exactes et numéros de lignes ne sont pas des mesures et restent complets.",
+      "en": "Display only: generally three significant digits, at most four for dimensions and frequencies. For FEMU interval [l,r], the larger half-width u determines the shared decimal place of the estimate and bounds (two significant digits in width). Calculations and exports are not rounded. Invalid intervals use standard significant formatting. Exact algorithm constants and line numbers are not measurements and retain full digits.",
+      "refs": [
+        [
+          "web/suite.js",
+          "function number("
+        ],
+        [
+          "web/suite.js",
+          "function interval("
+        ]
+      ]
+    },
+    {
+      "title": "Échange modal Universal / Universal modal interchange",
+      "math": "f_j&=\\omega_j/(2\\pi),\\quad\\zeta_j=\\eta_j/2,\\\\\\Phi_j^T M\\Phi_j&=1,\\quad n_{UFF}=n_{local}+1.",
+      "fr": "UNV et UFF sont deux extensions du même format Universal ASCII. Export des modes secs EF d’origine, sans retouches virtuelles ni modes acoustiques. Données 164 : unités SI ; 2411 : tous les nœuds solides et coordonnées XYZ en mètres ; 2412 : peau triangulée pour visualisation, pas maillage volumique EF ; 55 : vecteurs réels XYZ normalisés en masse, fréquences Hz, amortissement visqueux équivalent eta/2. Identifiants locaux renumérotés de 1 à N. Le format standard E13.5 des données 55 conserve six chiffres significatifs ; le NPZ garde les tableaux numériques complets.",
+      "en": "UNV and UFF are two extensions of the same ASCII Universal format. Original dry FE modes are exported, without virtual modal edits or acoustic modes. Dataset 164: SI units; 2411: all solid nodes and XYZ coordinates in metres; 2412: triangular visualization skin, not a volume FE mesh; 55: real mass-normalized XYZ vectors, frequencies in Hz, equivalent viscous damping eta/2. Local node IDs are renumbered 1 through N. Dataset 55 standard E13.5 records retain six significant digits; NPZ keeps the complete numerical arrays.",
+      "refs": [
+        [
+          "backend/universal.py",
+          "def universal_modes("
+        ],
+        [
+          "backend/universal.py",
+          "def export_job("
+        ]
+      ]
+    }
+  ],
+  "tree": [
+    [
+      "Lancement / Launch",
+      "start.py, desktop.py, server.py, launchers"
+    ],
+    [
+      "Interface / Interface",
+      "web/index.html, app.js, signal.js, suite.js, styles, suite-icons.js, free-orbit.js, capture.js"
+    ],
+    [
+      "Géométrie / Geometry",
+      "backend/catalog.py, contours.py, svg_holes.py, geometry.py"
+    ],
+    [
+      "Éléments finis / Finite elements",
+      "backend/fem.py, reduction.py"
+    ],
+    [
+      "Acoustique / Acoustics",
+      "backend/response.py, uncertainty.py"
+    ],
+    [
+      "Synthèse / Synthesis",
+      "backend/strings.py, audio.py, repertoire.py, backend/universal.py (modal export)"
+    ],
+    [
+      "Contours de référence / Reference outlines",
+      "backend/outlines/, cutaways.json, CONTOURS.md, PUBLICATION.md"
+    ],
+    [
+      "Distribution / Distribution",
+      "packaging/, .github/workflows/, README*, CREDITS.md"
+    ],
+    [
+      "Documentation / Documentation",
+      "docs/manual.tex, *.tikz, source-map.json"
+    ]
+  ],
+  "flows": [
+    [
+      "Géométrie et calcul / Geometry and solve",
+      [
+        "web/app.js → server.py : projet JSON / JSON project",
+        "catalog.py + contours.py + svg_holes.py → geometry.py : Gmsh",
+        "fem.py : assemblage TET10 + TET4 / assembly",
+        "fem.py → reduction.py : modes + correction statique / modes and static correction",
+        "response.py : couplage structure-air / structure-air coupling",
+        "server.py → web/app.js : modes, FRF et exports / modes, FRF and exports"
+      ]
+    ],
+    [
+      "Synthèse et incertitude / Synthesis and uncertainty",
+      [
+        "web/app.js → server.py : réglages de jeu / playing settings",
+        "strings.py : impédances et modes chargés / impedances and loaded modes",
+        "audio.py + response.py : force bloquée × transfert / blocked force × transfer",
+        "repertoire.py : notes, tempo et assemblage / notes, tempo and assembly",
+        "web/signal.js + Web Audio : analyse, écoute, WAV / analysis, playback, WAV",
+        "uncertainty.py → response.py : tirages Monte-Carlo / Monte Carlo samples"
+      ]
+    ]
+  ],
+  "graphs": [
+    [
+      "Calcul mécanique et acoustique / Mechanical and acoustic solve",
+      [
+        [
+          0,
+          0,
+          "desktop.py / start.py → server.py"
+        ],
+        [
+          0,
+          -2.5,
+          "catalog.py : projet, matériaux / project, materials"
+        ],
+        [
+          -3.7,
+          -5,
+          "geometry.py : géométrie et maillage / geometry and mesh"
+        ],
+        [
+          3.7,
+          -5,
+          "contours.py + svg_holes.py : gabarits et ouïes / outlines and holes"
+        ],
+        [
+          -3.7,
+          -7.5,
+          "fem.py : assemblage, modes / assembly, modes"
+        ],
+        [
+          3.7,
+          -7.5,
+          "reduction.py : correction statique / static correction"
+        ],
+        [
+          0,
+          -10,
+          "response.py : système couplé, rayonnement / coupling, radiation"
+        ],
+        [
+          0,
+          -12.5,
+          "web/app.js : réponses et visualisation / response and visualization"
+        ]
+      ],
+      [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ]
+    ],
+    [
+      "Synthèse et propagation d’incertitude / Synthesis and uncertainty",
+      [
+        [
+          0,
+          0,
+          "web/app.js → server.py"
+        ],
+        [
+          -3.7,
+          -2.7,
+          "audio.py : synthèse de notes / note synthesis"
+        ],
+        [
+          3.7,
+          -2.7,
+          "uncertainty.py : Monte Carlo"
+        ],
+        [
+          -3.7,
+          -5.4,
+          "strings.py : modes et impédance / modes and impedance"
+        ],
+        [
+          3.7,
+          -5.4,
+          "response.py : transfert vibroacoustique / vibroacoustic transfer"
+        ],
+        [
+          -3.7,
+          -8.1,
+          "repertoire.py : notes et tempo / notes and tempo"
+        ],
+        [
+          3.7,
+          -8.1,
+          "web/signal.js : spectre, WAV / spectrum, WAV"
+        ],
+        [
+          0,
+          -10.8,
+          "Web Audio : écoute / playback"
+        ]
+      ],
+      [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ]
+      ]
+    ]
+  ]
+}

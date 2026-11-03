@@ -1,0 +1,22 @@
+\begin{tikzpicture}[box/.style={draw=ink!65,fill=paper,rounded corners=3pt,align=left,text width=13.2cm,inner sep=8pt,font=\small\sffamily},arrow/.style={-{Stealth[length=2.5mm]},draw=ink!70,line width=.6pt}]
+
+\node[box,fill=ink!10] (root) at (0,0) {\textbf{GMT} / File tree};
+\node[box] (n1) at (0,-1.85) {\textbf{Launch}\\ start.py, desktop.py, server.py, launchers};
+\draw[arrow] (root.west) -- ++(-.55,0) |- (n1.west);
+\node[box] (n2) at (0,-3.7) {\textbf{Interface}\\ web/index.html, app.js, signal.js, suite.js, styles, suite-icons.js, free-orbit.js, capture.js};
+\draw[arrow] (root.west) -- ++(-.55,0) |- (n2.west);
+\node[box] (n3) at (0,-5.550000000000001) {\textbf{Geometry}\\ backend/catalog.py, contours.py, svg\_holes.py, geometry.py};
+\draw[arrow] (root.west) -- ++(-.55,0) |- (n3.west);
+\node[box] (n4) at (0,-7.4) {\textbf{Finite elements}\\ backend/fem.py, reduction.py};
+\draw[arrow] (root.west) -- ++(-.55,0) |- (n4.west);
+\node[box] (n5) at (0,-9.25) {\textbf{Acoustics}\\ backend/response.py, uncertainty.py};
+\draw[arrow] (root.west) -- ++(-.55,0) |- (n5.west);
+\node[box] (n6) at (0,-11.100000000000001) {\textbf{Synthesis}\\ backend/strings.py, audio.py, repertoire.py, backend/universal.py (modal export)};
+\draw[arrow] (root.west) -- ++(-.55,0) |- (n6.west);
+\node[box] (n7) at (0,-12.950000000000001) {\textbf{Reference outlines}\\ backend/outlines/, cutaways.json, CONTOURS.md, PUBLICATION.md};
+\draw[arrow] (root.west) -- ++(-.55,0) |- (n7.west);
+\node[box] (n8) at (0,-14.8) {\textbf{Distribution}\\ packaging/, .github/workflows/, README*, CREDITS.md};
+\draw[arrow] (root.west) -- ++(-.55,0) |- (n8.west);
+\node[box] (n9) at (0,-16.650000000000002) {\textbf{Documentation}\\ docs/manual.tex, *.tikz, source-map.json};
+\draw[arrow] (root.west) -- ++(-.55,0) |- (n9.west);
+\end{tikzpicture}

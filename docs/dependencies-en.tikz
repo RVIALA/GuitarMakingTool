@@ -1,0 +1,43 @@
+\begin{tikzpicture}[box/.style={draw=ink!65,fill=paper,rounded corners=3pt,align=left,text width=5.7cm,inner sep=8pt,font=\small\sffamily},arrow/.style={-{Stealth[length=2.5mm]},draw=ink!70,line width=.6pt}]
+
+\node[box,text width=13cm,fill=ink!10] at (0,2) {\textbf{Mechanical and acoustic solve}};
+\node[box] (n0) at (0,0) {desktop.py / start.py  >  server.py};
+\node[box] (n1) at (0,-2.5) {catalog.py : project, materials};
+\node[box] (n2) at (-3.7,-5) {geometry.py : geometry and mesh};
+\node[box] (n3) at (3.7,-5) {contours.py + svg\_holes.py : outlines and holes};
+\node[box] (n4) at (-3.7,-7.5) {fem.py : assembly, modes};
+\node[box] (n5) at (3.7,-7.5) {reduction.py : static correction};
+\node[box] (n6) at (0,-10) {response.py : coupling, radiation};
+\node[box] (n7) at (0,-12.5) {web/app.js : response and visualization};
+\draw[arrow] (n0.south) -- (n1.north);
+\draw[arrow] (n0.south) -- (0,-1.05) -- (-7.069999999999999,-1.05) |- (n2.west);
+\draw[arrow] (n2.north) -- (-3.7,-3.95) -- (7.09,-3.95) |- (n1.east);
+\draw[arrow] (n2.east) -- (n3.west);
+\draw[arrow] (n0.south) -- (0,-1.05) -- (-7.13,-1.05) |- (n4.west);
+\draw[arrow] (n4.east) -- (n5.west);
+\draw[arrow] (n0.south) -- (0,-1.05) -- (7.17,-1.05) |- (n6.east);
+\draw[arrow] (n6.north) -- (0,-8.95) -- (7.1899999999999995,-8.95) |- (n5.east);
+\draw[arrow] (n6.south) -- (n7.north);
+\end{tikzpicture}
+\newpage
+\begin{tikzpicture}[box/.style={draw=ink!65,fill=paper,rounded corners=3pt,align=left,text width=5.7cm,inner sep=8pt,font=\small\sffamily},arrow/.style={-{Stealth[length=2.5mm]},draw=ink!70,line width=.6pt}]
+
+\node[box,text width=13cm,fill=ink!10] at (0,2) {\textbf{Synthesis and uncertainty}};
+\node[box] (n0) at (0,0) {web/app.js  >  server.py};
+\node[box] (n1) at (-3.7,-2.7) {audio.py : note synthesis};
+\node[box] (n2) at (3.7,-2.7) {uncertainty.py : Monte Carlo};
+\node[box] (n3) at (-3.7,-5.4) {strings.py : modes and impedance};
+\node[box] (n4) at (3.7,-5.4) {response.py : vibroacoustic transfer};
+\node[box] (n5) at (-3.7,-8.1) {repertoire.py : notes and tempo};
+\node[box] (n6) at (3.7,-8.1) {web/signal.js : spectrum, WAV};
+\node[box] (n7) at (0,-10.8) {Web Audio : playback};
+\draw[arrow] (n0.south) -- (0,-1.05) -- (-7.05,-1.05) |- (n1.west);
+\draw[arrow] (n0.south) -- (0,-1.05) -- (7.069999999999999,-1.05) |- (n2.east);
+\draw[arrow] (n1.south) -- (n3.north);
+\draw[arrow] (n1.south) -- (-3.7,-3.75) -- (7.109999999999999,-3.75) |- (n4.east);
+\draw[arrow] (n2.south) -- (n4.north);
+\draw[arrow] (n0.south) -- (0,-1.05) -- (-7.1499999999999995,-1.05) |- (n5.west);
+\draw[arrow] (n5.north) -- (-3.7,-7.05) -- (-7.17,-7.05) |- (n1.west);
+\draw[arrow] (n0.south) -- (0,-1.05) -- (7.1899999999999995,-1.05) |- (n6.east);
+\draw[arrow] (n0.south) -- (0,-1.05) -- (7.21,-1.05) |- (n7.east);
+\end{tikzpicture}

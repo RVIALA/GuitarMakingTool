@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const source=fs.readFileSync(new URL('../web/app.js',import.meta.url),'utf8');
+const fn=source.slice(source.indexOf('async function importHoleSVG('),source.indexOf('function renderOutlineInfo('));
+const original={body:{width:380},hole:{width:98,height:98,kind:'round',x:0,y:320}};
+const file={size:100,name:'pair.svg',text:async()=>'<svg/>'};
+const shape={contours:[[[0,0],[.1,0],[0,.1]]],aspect:2,count:1};
+let changes=0;
+const context=vm.createContext({project:structuredClone(original),clone:structuredClone,tr:(fr,en)=>en,renderAllControls(){},changed(){changes++},toast(){},api:async(path,payload)=>path==='/api/import-holes'?shape:{project:payload.project}});
+vm.runInContext(fn,context);
+await context.importHoleSVG(file);assert.equal(context.project.hole.kind,'svg');assert.equal(context.project.hole.width,196);assert.equal(context.project.hole.height,98);assert.equal(context.project.hole.svgName,'pair.svg');assert.equal(changes,1);
+context.project=structuredClone(original);context.api=async()=>{throw Error('Invalid SVG')};await assert.rejects(context.importHoleSVG(file));assert.deepEqual(context.project,original);
+context.api=async(path)=>{if(path==='/api/import-holes')return shape;throw Error('Outside body')};await assert.rejects(context.importHoleSVG(file));assert.deepEqual(context.project,original);
+context.api=async(path,payload)=>{if(path==='/api/import-holes')return shape;context.project.hole.x=20;return {project:payload.project}};await assert.rejects(context.importHoleSVG(file),/Project changed/);assert.equal(context.project.hole.x,20);assert.equal(context.project.hole.kind,'round');
+await assert.rejects(context.importHoleSVG({...file,size:1000001}),/1 MB/);
+console.log('PASS: import dimensions, committed outlines, rollback on parser/geometry error, stale-project rejection and file size limit.');

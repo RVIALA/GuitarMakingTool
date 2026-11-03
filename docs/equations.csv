@@ -1,0 +1,52 @@
+group,title,file,line,line_end,anchor
+1,Tenseur orthotrope / Orthotropic tensor,backend/catalog.py,61,65,def compliance(
+2,TET10 et quadrature / TET10 and quadrature,backend/fem.py,17,21,def shape(
+3,Modes élastiques / Elastic modes,backend/fem.py,53,99,def wood_system(
+4,Contours de référence et pan coupé / Reference outlines and cutaway,backend/contours.py,59,77,def outline(
+4,Contours de référence et pan coupé / Reference outlines and cutaway,backend/contours.py,16,17,def bezier(
+4,Contours de référence et pan coupé / Reference outlines and cutaway,backend/contours.py,28,57,def cutaway(
+5,Mise à l’échelle et voûte / Scaling and arch,backend/contours.py,59,77,def outline(
+5,Mise à l’échelle et voûte / Scaling and arch,backend/geometry.py,57,62,def arch(
+5,Mise à l’échelle et voûte / Scaling and arch,backend/geometry.py,64,67,def warp(
+6,Rosace et ouïes / Soundhole and apertures,backend/geometry.py,12,25,def holes(
+6,Rosace et ouïes / Soundhole and apertures,backend/geometry.py,27,36,def checked_holes(
+6,Rosace et ouïes / Soundhole and apertures,backend/geometry.py,38,43,def brace_footprint(
+7,Transformations et courbes SVG / SVG transforms and curves,backend/svg_holes.py,27,43,def transform(
+7,Transformations et courbes SVG / SVG transforms and curves,backend/svg_holes.py,45,55,def flatten_curve(
+7,Transformations et courbes SVG / SVG transforms and curves,backend/svg_holes.py,57,76,def arc(
+7,Transformations et courbes SVG / SVG transforms and curves,backend/svg_holes.py,147,189,def parse_svg(
+8,Repères locaux et pertes / Local frames and losses,backend/fem.py,23,44,def frames(
+8,Repères locaux et pertes / Local frames and losses,backend/fem.py,46,51,def stiffness_material(
+8,Repères locaux et pertes / Local frames and losses,backend/fem.py,53,99,def wood_system(
+9,Ports mécaniques et surfaces / Mechanical ports and surfaces,backend/fem.py,125,139,def port_matrix(
+9,Ports mécaniques et surfaces / Mechanical ports and surfaces,backend/fem.py,102,123,def boundary(
+9,Ports mécaniques et surfaces / Mechanical ports and surfaces,backend/response.py,12,23,def prepare(
+10,Acoustique interne TET4 / Internal TET4 acoustics,backend/fem.py,141,153,def air_system(
+10,Acoustique interne TET4 / Internal TET4 acoustics,backend/fem.py,155,166,def coupling_to_air(
+11,Correction statique et modes résiduels / Static residual modes,backend/reduction.py,11,46,def residual_modes(
+12,Ouverture acoustique et Helmholtz / Aperture and Helmholtz,backend/response.py,35,68,def coefficients(
+12,Ouverture acoustique et Helmholtz / Aperture and Helmholtz,backend/response.py,82,91,def public_response(
+13,Résolution vibroacoustique / Vibroacoustic solve,backend/response.py,25,33,def modal_parameters(
+13,Résolution vibroacoustique / Vibroacoustic solve,backend/response.py,70,80,def response_grid(
+14,Rayonnement extérieur / Exterior radiation,backend/response.py,35,68,def coefficients(
+14,Rayonnement extérieur / Exterior radiation,backend/response.py,70,80,def response_grid(
+15,Corde : accordage et pertes / String tuning and loss,backend/strings.py,5,8,def string_properties(
+15,Corde : accordage et pertes / String tuning and loss,backend/strings.py,10,13,def decay_rate(
+16,Impédance de corde raide / Stiff-string impedance,backend/strings.py,15,20,def string_impedance(
+17,Charge couplée et passivité / Coupled loading and passivity,backend/response.py,82,91,def public_response(
+17,Charge couplée et passivité / Coupled loading and passivity,backend/audio.py,27,67,def templates(
+18,"Force bloquée, FFT et synthèse / Blocked force and synthesis",backend/audio.py,8,12,def interpolate(
+18,"Force bloquée, FFT et synthèse / Blocked force and synthesis",backend/audio.py,27,67,def templates(
+18,"Force bloquée, FFT et synthèse / Blocked force and synthesis",backend/audio.py,69,75,def synthesize(
+19,Phrases et tempo / Phrases and tempo,backend/repertoire.py,11,35,def synthesize_phrase(
+19,Phrases et tempo / Phrases and tempo,web/repertoire.js,15,15,60/
+20,Dispersion Monte-Carlo / Monte Carlo dispersion,backend/uncertainty.py,7,39,def ensemble(
+21,FFT et fenêtres spectrales / FFT and spectral windows,web/signal.js,2,2,export function fft(
+22,"Crête, RMS et WAV / Peak, RMS and WAV",web/signal.js,22,22,export function wav(
+23,Écoute et sélection spectrale / Monitoring and band selection,web/signal.js,23,23,export function playbackGain(
+23,Écoute et sélection spectrale / Monitoring and band selection,web/signal.js,41,41,export function extractBand(
+23,Écoute et sélection spectrale / Monitoring and band selection,web/signal.js,32,32,export function waveformEnvelope(
+24,Précision affichée / Display precision,web/suite.js,13,13,function number(
+24,Précision affichée / Display precision,web/suite.js,19,19,function interval(
+25,Échange modal Universal / Universal modal interchange,backend/universal.py,6,35,def universal_modes(
+25,Échange modal Universal / Universal modal interchange,backend/universal.py,37,43,def export_job(

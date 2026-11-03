@@ -1,0 +1,431 @@
+{
+  "author": "Romain VIALA",
+  "version": "1.10.0",
+  "sha256": {
+    "backend/catalog.py": "5e4b81f0fbf7b5fbe72840cb6670ffb3d4de00645238976d65c08217dee2d917",
+    "backend/fem.py": "302fe77b9ff14ca992ad254aecbda344bd50216f8f06793e23b52eba209e02b5",
+    "backend/contours.py": "9c8ed4fd59fa345eda2fd3c07b0ee3ddfac4d80e1992d28ca8635917693a30ba",
+    "backend/geometry.py": "713a9439a750af7968f0863ae6bc2dc70ba79ad93c8ad7c042b6a83225280ca1",
+    "backend/svg_holes.py": "3fb9da9e8f2eb6da953a65ab427af918e8aa4895d34d6f78e89f6c80de4a71c6",
+    "backend/response.py": "11ad98dde2e7aa6106e04b7cebfa015110fd866b91cfaa24e82dae0d803ed1fd",
+    "backend/reduction.py": "b5368f7ed114d940c2560e797e41fff134bb25bf80b5a6af87db3278589f3cce",
+    "backend/strings.py": "a35177b2631ff7bd4961596c4c6cfcb2de8e4ef4947845e6cca01e18c0c686f2",
+    "backend/audio.py": "0d58fd4813050c09f371bc1f72ed6257dbc5f7e4aedbd2334c6f5cb284a1d788",
+    "backend/repertoire.py": "db2a44eb57be2b4b9a4b088443c609a3653879a4ac614843b0e3dabe42ee2da2",
+    "web/repertoire.js": "3a9470ac81e27fe5afe3a3580039d636d0f1b6b4da4690eefc35fcf8b1f1495a",
+    "backend/uncertainty.py": "059736be93161b00f39955309b2c3ea39f4f433c5e0452cd8f7ec5ecaefc396c",
+    "web/signal.js": "d8585a32d342a3cb251d315e687af47af63f7015ce138f927ddd036fd9518d82",
+    "web/suite.js": "7987a5175fade41b56165e96ffd51f2b2a42a02adef847eea920e5742dbfb08f",
+    "backend/universal.py": "a645f8579dc5c46e98d50bfb63c25064685d09619814ad7d63b59ddf001e5652"
+  },
+  "references": [
+    {
+      "group": 1,
+      "title": "Tenseur orthotrope / Orthotropic tensor",
+      "file": "backend/catalog.py",
+      "line": 61,
+      "line_end": 65,
+      "anchor": "def compliance("
+    },
+    {
+      "group": 2,
+      "title": "TET10 et quadrature / TET10 and quadrature",
+      "file": "backend/fem.py",
+      "line": 17,
+      "line_end": 21,
+      "anchor": "def shape("
+    },
+    {
+      "group": 3,
+      "title": "Modes élastiques / Elastic modes",
+      "file": "backend/fem.py",
+      "line": 53,
+      "line_end": 99,
+      "anchor": "def wood_system("
+    },
+    {
+      "group": 4,
+      "title": "Contours de référence et pan coupé / Reference outlines and cutaway",
+      "file": "backend/contours.py",
+      "line": 59,
+      "line_end": 77,
+      "anchor": "def outline("
+    },
+    {
+      "group": 4,
+      "title": "Contours de référence et pan coupé / Reference outlines and cutaway",
+      "file": "backend/contours.py",
+      "line": 16,
+      "line_end": 17,
+      "anchor": "def bezier("
+    },
+    {
+      "group": 4,
+      "title": "Contours de référence et pan coupé / Reference outlines and cutaway",
+      "file": "backend/contours.py",
+      "line": 28,
+      "line_end": 57,
+      "anchor": "def cutaway("
+    },
+    {
+      "group": 5,
+      "title": "Mise à l’échelle et voûte / Scaling and arch",
+      "file": "backend/contours.py",
+      "line": 59,
+      "line_end": 77,
+      "anchor": "def outline("
+    },
+    {
+      "group": 5,
+      "title": "Mise à l’échelle et voûte / Scaling and arch",
+      "file": "backend/geometry.py",
+      "line": 57,
+      "line_end": 62,
+      "anchor": "def arch("
+    },
+    {
+      "group": 5,
+      "title": "Mise à l’échelle et voûte / Scaling and arch",
+      "file": "backend/geometry.py",
+      "line": 64,
+      "line_end": 67,
+      "anchor": "def warp("
+    },
+    {
+      "group": 6,
+      "title": "Rosace et ouïes / Soundhole and apertures",
+      "file": "backend/geometry.py",
+      "line": 12,
+      "line_end": 25,
+      "anchor": "def holes("
+    },
+    {
+      "group": 6,
+      "title": "Rosace et ouïes / Soundhole and apertures",
+      "file": "backend/geometry.py",
+      "line": 27,
+      "line_end": 36,
+      "anchor": "def checked_holes("
+    },
+    {
+      "group": 6,
+      "title": "Rosace et ouïes / Soundhole and apertures",
+      "file": "backend/geometry.py",
+      "line": 38,
+      "line_end": 43,
+      "anchor": "def brace_footprint("
+    },
+    {
+      "group": 7,
+      "title": "Transformations et courbes SVG / SVG transforms and curves",
+      "file": "backend/svg_holes.py",
+      "line": 27,
+      "line_end": 43,
+      "anchor": "def transform("
+    },
+    {
+      "group": 7,
+      "title": "Transformations et courbes SVG / SVG transforms and curves",
+      "file": "backend/svg_holes.py",
+      "line": 45,
+      "line_end": 55,
+      "anchor": "def flatten_curve("
+    },
+    {
+      "group": 7,
+      "title": "Transformations et courbes SVG / SVG transforms and curves",
+      "file": "backend/svg_holes.py",
+      "line": 57,
+      "line_end": 76,
+      "anchor": "def arc("
+    },
+    {
+      "group": 7,
+      "title": "Transformations et courbes SVG / SVG transforms and curves",
+      "file": "backend/svg_holes.py",
+      "line": 147,
+      "line_end": 189,
+      "anchor": "def parse_svg("
+    },
+    {
+      "group": 8,
+      "title": "Repères locaux et pertes / Local frames and losses",
+      "file": "backend/fem.py",
+      "line": 23,
+      "line_end": 44,
+      "anchor": "def frames("
+    },
+    {
+      "group": 8,
+      "title": "Repères locaux et pertes / Local frames and losses",
+      "file": "backend/fem.py",
+      "line": 46,
+      "line_end": 51,
+      "anchor": "def stiffness_material("
+    },
+    {
+      "group": 8,
+      "title": "Repères locaux et pertes / Local frames and losses",
+      "file": "backend/fem.py",
+      "line": 53,
+      "line_end": 99,
+      "anchor": "def wood_system("
+    },
+    {
+      "group": 9,
+      "title": "Ports mécaniques et surfaces / Mechanical ports and surfaces",
+      "file": "backend/fem.py",
+      "line": 125,
+      "line_end": 139,
+      "anchor": "def port_matrix("
+    },
+    {
+      "group": 9,
+      "title": "Ports mécaniques et surfaces / Mechanical ports and surfaces",
+      "file": "backend/fem.py",
+      "line": 102,
+      "line_end": 123,
+      "anchor": "def boundary("
+    },
+    {
+      "group": 9,
+      "title": "Ports mécaniques et surfaces / Mechanical ports and surfaces",
+      "file": "backend/response.py",
+      "line": 12,
+      "line_end": 23,
+      "anchor": "def prepare("
+    },
+    {
+      "group": 10,
+      "title": "Acoustique interne TET4 / Internal TET4 acoustics",
+      "file": "backend/fem.py",
+      "line": 141,
+      "line_end": 153,
+      "anchor": "def air_system("
+    },
+    {
+      "group": 10,
+      "title": "Acoustique interne TET4 / Internal TET4 acoustics",
+      "file": "backend/fem.py",
+      "line": 155,
+      "line_end": 166,
+      "anchor": "def coupling_to_air("
+    },
+    {
+      "group": 11,
+      "title": "Correction statique et modes résiduels / Static residual modes",
+      "file": "backend/reduction.py",
+      "line": 11,
+      "line_end": 46,
+      "anchor": "def residual_modes("
+    },
+    {
+      "group": 12,
+      "title": "Ouverture acoustique et Helmholtz / Aperture and Helmholtz",
+      "file": "backend/response.py",
+      "line": 35,
+      "line_end": 68,
+      "anchor": "def coefficients("
+    },
+    {
+      "group": 12,
+      "title": "Ouverture acoustique et Helmholtz / Aperture and Helmholtz",
+      "file": "backend/response.py",
+      "line": 82,
+      "line_end": 91,
+      "anchor": "def public_response("
+    },
+    {
+      "group": 13,
+      "title": "Résolution vibroacoustique / Vibroacoustic solve",
+      "file": "backend/response.py",
+      "line": 25,
+      "line_end": 33,
+      "anchor": "def modal_parameters("
+    },
+    {
+      "group": 13,
+      "title": "Résolution vibroacoustique / Vibroacoustic solve",
+      "file": "backend/response.py",
+      "line": 70,
+      "line_end": 80,
+      "anchor": "def response_grid("
+    },
+    {
+      "group": 14,
+      "title": "Rayonnement extérieur / Exterior radiation",
+      "file": "backend/response.py",
+      "line": 35,
+      "line_end": 68,
+      "anchor": "def coefficients("
+    },
+    {
+      "group": 14,
+      "title": "Rayonnement extérieur / Exterior radiation",
+      "file": "backend/response.py",
+      "line": 70,
+      "line_end": 80,
+      "anchor": "def response_grid("
+    },
+    {
+      "group": 15,
+      "title": "Corde : accordage et pertes / String tuning and loss",
+      "file": "backend/strings.py",
+      "line": 5,
+      "line_end": 8,
+      "anchor": "def string_properties("
+    },
+    {
+      "group": 15,
+      "title": "Corde : accordage et pertes / String tuning and loss",
+      "file": "backend/strings.py",
+      "line": 10,
+      "line_end": 13,
+      "anchor": "def decay_rate("
+    },
+    {
+      "group": 16,
+      "title": "Impédance de corde raide / Stiff-string impedance",
+      "file": "backend/strings.py",
+      "line": 15,
+      "line_end": 20,
+      "anchor": "def string_impedance("
+    },
+    {
+      "group": 17,
+      "title": "Charge couplée et passivité / Coupled loading and passivity",
+      "file": "backend/response.py",
+      "line": 82,
+      "line_end": 91,
+      "anchor": "def public_response("
+    },
+    {
+      "group": 17,
+      "title": "Charge couplée et passivité / Coupled loading and passivity",
+      "file": "backend/audio.py",
+      "line": 27,
+      "line_end": 67,
+      "anchor": "def templates("
+    },
+    {
+      "group": 18,
+      "title": "Force bloquée, FFT et synthèse / Blocked force and synthesis",
+      "file": "backend/audio.py",
+      "line": 8,
+      "line_end": 12,
+      "anchor": "def interpolate("
+    },
+    {
+      "group": 18,
+      "title": "Force bloquée, FFT et synthèse / Blocked force and synthesis",
+      "file": "backend/audio.py",
+      "line": 27,
+      "line_end": 67,
+      "anchor": "def templates("
+    },
+    {
+      "group": 18,
+      "title": "Force bloquée, FFT et synthèse / Blocked force and synthesis",
+      "file": "backend/audio.py",
+      "line": 69,
+      "line_end": 75,
+      "anchor": "def synthesize("
+    },
+    {
+      "group": 19,
+      "title": "Phrases et tempo / Phrases and tempo",
+      "file": "backend/repertoire.py",
+      "line": 11,
+      "line_end": 35,
+      "anchor": "def synthesize_phrase("
+    },
+    {
+      "group": 19,
+      "title": "Phrases et tempo / Phrases and tempo",
+      "file": "web/repertoire.js",
+      "line": 15,
+      "line_end": 15,
+      "anchor": "60/"
+    },
+    {
+      "group": 20,
+      "title": "Dispersion Monte-Carlo / Monte Carlo dispersion",
+      "file": "backend/uncertainty.py",
+      "line": 7,
+      "line_end": 39,
+      "anchor": "def ensemble("
+    },
+    {
+      "group": 21,
+      "title": "FFT et fenêtres spectrales / FFT and spectral windows",
+      "file": "web/signal.js",
+      "line": 2,
+      "line_end": 2,
+      "anchor": "export function fft("
+    },
+    {
+      "group": 22,
+      "title": "Crête, RMS et WAV / Peak, RMS and WAV",
+      "file": "web/signal.js",
+      "line": 22,
+      "line_end": 22,
+      "anchor": "export function wav("
+    },
+    {
+      "group": 23,
+      "title": "Écoute et sélection spectrale / Monitoring and band selection",
+      "file": "web/signal.js",
+      "line": 23,
+      "line_end": 23,
+      "anchor": "export function playbackGain("
+    },
+    {
+      "group": 23,
+      "title": "Écoute et sélection spectrale / Monitoring and band selection",
+      "file": "web/signal.js",
+      "line": 41,
+      "line_end": 41,
+      "anchor": "export function extractBand("
+    },
+    {
+      "group": 23,
+      "title": "Écoute et sélection spectrale / Monitoring and band selection",
+      "file": "web/signal.js",
+      "line": 32,
+      "line_end": 32,
+      "anchor": "export function waveformEnvelope("
+    },
+    {
+      "group": 24,
+      "title": "Précision affichée / Display precision",
+      "file": "web/suite.js",
+      "line": 13,
+      "line_end": 13,
+      "anchor": "function number("
+    },
+    {
+      "group": 24,
+      "title": "Précision affichée / Display precision",
+      "file": "web/suite.js",
+      "line": 19,
+      "line_end": 19,
+      "anchor": "function interval("
+    },
+    {
+      "group": 25,
+      "title": "Échange modal Universal / Universal modal interchange",
+      "file": "backend/universal.py",
+      "line": 6,
+      "line_end": 35,
+      "anchor": "def universal_modes("
+    },
+    {
+      "group": 25,
+      "title": "Échange modal Universal / Universal modal interchange",
+      "file": "backend/universal.py",
+      "line": 37,
+      "line_end": 43,
+      "anchor": "def export_job("
+    }
+  ]
+}

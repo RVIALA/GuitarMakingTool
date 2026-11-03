@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {LiveStrings} from '../web/live.js';
+const sr=1000,n=500;let calls=0,key='one',captured,started=0;const status=[];
+const ctx={state:'running',currentTime:10,destination:{},createBuffer(ch,len,sr){return {length:len,duration:len/sr,copyToChannel(){}}},createGain(){return {gain:{value:1,setValueAtTime(x){this.value=x}},connect(){},disconnect(){}}},createBufferSource(){return {connect(){},disconnect(){},start(){started++},stop(){}}}};
+const response=()=>({sr,duration:n/sr,project:{name:'Test'},band:1000,synthesisBand:[20,400],...Object.fromEntries(['force','velocity','pressure'].map((k,j)=>[k,Array.from({length:6},(_,i)=>Float32Array.from({length:n},(_,a)=>Math.sin(a*.1)*(i+1)*(j+1)))]))});
+const live=new LiveStrings({context:()=>ctx,signature:()=>key,prepare:async()=>{calls++;return response()},monitor:()=>({source:'pressure',mode:'peak',gain:0,level:1}),onTake:t=>captured=t,onStatus:s=>status.push(s),onAnimate(){}});
+assert.equal(live.play(0),false);await live.prepare();live.warmBuffers();assert.ok(live.ready());
+const before=calls;const t0=performance.now();for(let i=0;i<6;i++)assert.ok(live.play(i,1,i*.02));const dispatch=performance.now()-t0;
+assert.equal(calls,before);assert.equal(started,6);assert.equal(live.voices.length,6);const bound=live.voices.reduce((s,v)=>s+v.metrics.peak*v.gain.gain.value,0)*live.master.gain.value;assert.ok(bound<=.90000001);
+live.capture();assert.equal(captured.events.length,6);assert.equal(captured.force.length,600);assert.ok(captured.stats.pressure.peak>0);
+const expected=new Float32Array(600);for(let i=0;i<6;i++)for(let j=0;j<n;j++)expected[i*20+j]+=response().force[i][j];assert.deepEqual(captured.force,expected);
+live.play(0);assert.equal(live.voices.length,6);live.stop();assert.equal(live.voices.length,0);
+await live.prepare();assert.equal(calls,1);key='changed';assert.equal(live.play(0),false);await live.prepare();assert.equal(calls,2);assert.ok(live.ready());
+let resolve;key='pending';live.request=()=>new Promise(r=>resolve=r);const task=live.prepare();key='newer';live.invalidate();resolve(response());await task;assert.equal(live.ready(),false);live.clear();
+console.log(JSON.stringify({status:'PASS',six_onsets_ms:dispatch,no_network_at_onset:true,protected_peak_bound:bound,superposition_exact:true,stale_bank_rejected:true},null,2));

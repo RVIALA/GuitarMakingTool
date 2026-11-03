@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120mm" height="70mm" viewBox="-60 -35 120 70">
+  <title>Deux ouvertures ovales / Two oval openings</title>
+  <ellipse cx="-50" cy="0" rx="10" ry="35"/>
+  <ellipse cx="50" cy="0" rx="10" ry="35"/>
+</svg>

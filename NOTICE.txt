@@ -1,0 +1,17 @@
+GMT 1.8.0
+Auteur / Author: Romain VIALA
+
+GMT — crédits / credits
+
+Auteur / Author: Romain VIALA.
+
+Licence de l’application : GPL v3 ou ultérieure, voir LICENSE.txt. Les composants tiers conservent leurs licences. / Application: GPL v3 or later, see LICENSE.txt; dependencies keep their licenses.
+
+
+
+
+Contours de référence restaurés depuis GMT 1.6 : Christophe Grellier (OM), Étienne Corbet (classique), plan Maccaferri D (manouche), GenOne Luthier Services (dreadnought), Mark French (modèle mathématique archtop) ; pans coupés Maccaferri, référence Benedetto et Gibson ES-175D. Voir CONTOURS.md et PUBLICATION.md pour la provenance, les adaptations et les droits distincts du code. / Restored GMT 1.6 reference outlines; see CONTOURS.md and PUBLICATION.md for attribution, adaptations and content-specific rights.
+
+Three.js : auteurs de Three.js, MIT, notice web/vendor/THREE_LICENSE.txt. Gmsh : Christophe Geuzaine, Jean-François Remacle et contributeurs, GPL v2 ou ultérieure. NumPy, SciPy et Shapely/GEOS : voir les notices embarquées dans les compilations.
+
+Répertoire : mélodies traditionnelles ou compositions du domaine public réencodées pour la synthèse, plus motifs acoustiques originaux ; pas d’enregistrement commercial. / Repertoire: public-domain melodies and original acoustic patterns, synthesized with the current guitar settings; no commercial recordings.

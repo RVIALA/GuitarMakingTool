@@ -1,0 +1,19 @@
+/* Romain VIALA — composited, labelled PNG and silent modal video exports. */
+function frame(view,caption,legend,c=document.createElement('canvas')){
+ view.renderer.render(view.scene,view.camera);const source=view.renderer.domElement;if(c.width!==source.width)c.width=source.width;const height=source.height+72+(legend?.height?48:0);if(c.height!==height)c.height=height;const g=c.getContext('2d');g.fillStyle='#e7ece5';g.fillRect(0,0,c.width,c.height);g.drawImage(source,0,0);g.fillStyle='#173d36';g.font=Math.max(12,Math.min(20,c.width/55))+'px system-ui';g.fillText(caption,18,source.height+28,c.width-36);g.font='12px system-ui';g.fillText('GMT · Romain VIALA · '+new Date().toISOString().slice(0,10),18,source.height+52);if(legend?.height)g.drawImage(legend,18,source.height+65,c.width-36,36);return c;
+}
+function isolate(view,part){if(part!=='visible'&&!view.group.children.some(m=>m.userData.part===part))throw Error('Selected part is absent / Élément sélectionné absent');const groups=[view.group,view.airGroup,view.grainGroup,view.portGroup],saved=[];for(const group of groups){saved.push([group,group.visible]);if(group!==view.group&&part!=='visible')group.visible=part==='air'&&group===view.airGroup;}
+ if(part!=='visible')for(const mesh of view.group.children){saved.push([mesh,mesh.visible]);mesh.visible=mesh.userData.part===part;}
+ return ()=>{for(const [o,v] of saved)o.visible=v;};
+}
+export async function savePNG(view,name,part='visible',caption='',legend){if(!view?.group.children.length)throw Error('No 3D geometry / Aucune géométrie 3D');const restore=isolate(view,part);try{const c=frame(view,caption,legend),blob=await new Promise(r=>c.toBlob(r,'image/png'));if(!blob)throw Error('PNG export failed');AppUX.download(blob,name+'.png');}finally{restore();view.renderer.render(view.scene,view.camera);}}
+export async function saveVideo(view,name,part='visible',caption='',legend){
+ if(!view?.mode)throw Error('Select a computed mode / Sélectionnez un mode calculé');if(view.recording)throw Error('Video recording already active / Enregistrement en cours');if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream)throw Error('Video export unavailable in this browser / Export vidéo indisponible dans ce navigateur');
+ const type=['video/mp4;codecs=avc1.42E01E','video/mp4','video/webm;codecs=vp9','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));if(!type)throw Error('No supported video codec / Aucun codec vidéo disponible');const restore=isolate(view,part),old=view.animating,mode=view.mode;let c;
+ let stream,rec,timer,raf,failure;view.recording=true;view.animating=true;
+ try{c=frame(view,caption,legend);stream=c.captureStream(30);rec=new MediaRecorder(stream,{mimeType:type,videoBitsPerSecond:6000000});const chunks=[];
+ const done=new Promise((resolve,reject)=>{rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};rec.onerror=e=>reject(Error(e.error?.message||'Video recording failed'));rec.onstop=resolve;});
+ const draw=()=>{if(view.mode!==mode){failure=Error('Mode changed during recording / Mode modifié pendant la capture');if(rec.state!=='inactive')rec.stop();return;}try{frame(view,caption+' · slow visual animation / animation visuelle ralentie',legend,c);}catch(e){failure=e;if(rec.state!=='inactive')rec.stop();return;}raf=requestAnimationFrame(draw);};
+ rec.start(250);draw();timer=setTimeout(()=>{if(rec.state!=='inactive')rec.stop();},6000);await done;if(failure)throw failure;const blob=new Blob(chunks,{type:rec.mimeType});if(!blob.size)throw Error('Empty video / Vidéo vide');AppUX.download(blob,name+(rec.mimeType.includes('mp4')?'.mp4':'.webm'));
+ }finally{clearTimeout(timer);cancelAnimationFrame(raf);if(rec&&rec.state!=='inactive')rec.stop();stream?.getTracks().forEach(t=>t.stop());view.animating=old;view.recording=false;restore();}
+}
