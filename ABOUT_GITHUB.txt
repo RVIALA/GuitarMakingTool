@@ -1,0 +1,4 @@
+FR: Géométrie de guitare acoustique, calcul FEM, mobilité au chevalet et synthèse sonore.
+EN: Acoustic guitar geometry, FEM, bridge mobility and sound synthesis.
+Author / Auteur: Romain VIALA
+Topics: acoustics, music, lutherie, simulation, audio, python, finite-element-method

@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Please cite this software / Merci de citer ce logiciel."
+title: "GMT"
+type: software
+authors:
+  - family-names: VIALA
+    given-names: Romain
+version: "1.10.0"
+date-released: 2026-11-03
